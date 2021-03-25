@@ -6,37 +6,42 @@ using namespace std;
 
 using json = nlohmann::json;
 
+DFA::DFA(string p){
+    path = p;
+}
+
 bool DFA::accepts(string numbers){
     ifstream input(path);
-    json j;
-    input >> j;
+    input >> dfa;
 
     string cur_node;
 
-    for (int i = 0; i < j["states"].size(); i++){
-        if (j["states"][i]["starting"] == true)
-            cur_node =j["states"][i]["name"];
+    for (int i = 0; i < dfa["states"].size(); i++){
+        if (dfa["states"][i]["starting"] == true)
+            cur_node =dfa["states"][i]["name"];
     }
 
     for (int i = 0; i < numbers.size(); i++) {
         char num = numbers[i];
-        for (int i = 0; i < j["transitions"].size(); i++){
-            string numb = j["transitions"][i]["input"];
+        for (int i = 0; i < dfa["transitions"].size(); i++){
+            string numb = dfa["transitions"][i]["input"];
             numb.erase(remove( numb.begin(), numb.end(), '\"' ),numb.end());
 
-            if (j["transitions"][i]["from"] == cur_node && numb[0] == num){
-                cur_node = j["transitions"][i]["to"];
+            if (dfa["transitions"][i]["from"] == cur_node && numb[0] == num){
+                cur_node = dfa["transitions"][i]["to"];
                 break;
             }
         }
     }
 
-    for (int i = 0; i < j["states"].size(); i++){
-        if (j["states"][i]["name"] == cur_node)
-            return j["states"][i]["accepting"];
+    for (int i = 0; i < dfa["states"].size(); i++){
+        if (dfa["states"][i]["name"] == cur_node)
+            return dfa["states"][i]["accepting"];
     }
 }
 
 void DFA::print(){
-    cout << "nuffin";
+    ifstream input(path);
+    input >> dfa;
+    cout << dfa.dump(4) << endl;
 }

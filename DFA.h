@@ -3,14 +3,17 @@
 
 #include <string>
 #include <iostream>
-using namespace std;
+#include "json.hpp"
 
+using json = nlohmann::json;
+using namespace std;
 
 class DFA {
 
 public:
     string path;
-    DFA(string p){ path = p;};
+    json dfa;
+    DFA(string p);
 
     bool accepts(string numbers);
     void print();

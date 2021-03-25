@@ -11,6 +11,8 @@ string
 -
 iostream
 -
+json.hpp
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.cpp
 NFA.h
@@ -21,6 +23,8 @@ fstream
 -
 map
 -
+any
+-
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h
 string
@@ -29,6 +33,8 @@ DFA.h
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
 json.hpp
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
+map
+-
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 algorithm
