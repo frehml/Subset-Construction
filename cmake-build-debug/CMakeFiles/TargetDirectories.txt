@@ -1,0 +1,3 @@
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/cmake-build-debug/CMakeFiles/SSC.dir
