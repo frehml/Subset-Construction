@@ -1,9 +1,9 @@
 //
-// Created by Frederic frehml on 25/02/2021.
+// Created by frehml on 26/03/2021.
 //
 
-#ifndef SSC_NFA_H
-#define SSC_NFA_H
+#ifndef SSC_ENFA_H
+#define SSC_ENFA_H
 #include <string>
 #include "DFA.h"
 #include "json.hpp"
@@ -13,23 +13,25 @@
 using namespace std;
 using json = nlohmann::json;
 
-class NFA {
+class ENFA {
 public:
     string path;
     json dfa;
-    json nfa;
+    json enfa;
+    string eps;
     set<vector<string>> allStates;
 
-    NFA(string p);
+    ENFA(string p);
 
     DFA toDFA();
     void subsetConstruction(vector<string> state);
     void addState(string name, bool starting, bool accepting);
     void addTransition(string from, string to, string input);
+    vector<string> tryEpsilon(vector<string> state1);
     vector<string> findTransition(vector<string> state, string input);
     string vecToString(vector<string> new_state);
     bool accept(vector<string> new_state);
 };
 
 
-#endif //SSC_NFA_H
+#endif //SSC_ENFA_H

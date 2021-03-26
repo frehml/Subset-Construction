@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/SSC.dir/DFA.cpp.o"
+  "CMakeFiles/SSC.dir/ENFA.cpp.o"
   "CMakeFiles/SSC.dir/NFA.cpp.o"
   "CMakeFiles/SSC.dir/main.cpp.o"
   "SSC"

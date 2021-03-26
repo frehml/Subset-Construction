@@ -1,6 +1,6 @@
 
 //
-// Created by Frederic Hamelink on 25/02/2021.
+// Created by frehml on 25/02/2021.
 //
 
 #include "NFA.h"
@@ -42,50 +42,55 @@ string NFA::vecToString(vector<string> new_state) {
     return name;
 }
 
-void NFA::addState(string name, bool starting, bool accepting){
+//voegt state toe aan het json bestand
+void NFA::addState(string name, bool starting, bool accepting) {
     dfa["states"].push_back(
-                        {{"name", name},
-                             {"starting", starting},
-                             {"accepting", accepting}});
+            {{"name",      name},
+             {"starting",  starting},
+             {"accepting", accepting}});
 }
 
-void NFA::addTransition(string from, string to, string input){
+//voegt transitie toe aan het json bestand
+void NFA::addTransition(string from, string to, string input) {
     dfa["transitions"].push_back(
-                        {{"from", from},
-                             {"to", to},
-                             {"input", input}});
+            {{"from",  from},
+             {"to",    to},
+             {"input", input}});
 }
 
-vector<string> NFA::findTransition(vector<string> state, string input){
+//zoek transitie
+vector<string> NFA::findTransition(vector<string> state, string input) {
     vector<string> new_state;
-    for(int i = 0; i < nfa["transitions"].size(); i++){
-        if(count(state.begin(), state.end(), nfa["transitions"][i]["from"]) && nfa["transitions"][i]["input"] == input){
+    for (int i = 0; i < nfa["transitions"].size(); i++) {
+        if (count(state.begin(), state.end(), nfa["transitions"][i]["from"]) &&
+            nfa["transitions"][i]["input"] == input) {
             new_state.push_back(nfa["transitions"][i]["to"]);
         }
     }
     sort(new_state.begin(), new_state.end());
-    new_state.erase( unique( new_state.begin(), new_state.end() ), new_state.end() );
+    new_state.erase(unique(new_state.begin(), new_state.end()), new_state.end());
     addTransition(vecToString(state), vecToString(new_state), input);
     return new_state;
 }
 
-//vind states en transities recursief
+//vind ttransities en bijgevolg states recursief
 void NFA::subsetConstruction(vector<string> state) {
     vector<vector<string>> states;
 
-    if(allStates.find(state) != allStates.end())
+    if (allStates.find(state) != allStates.end())
         return;
     allStates.insert(state);
 
-    for(int i = 0; i < dfa["alphabet"].size(); i++){
+    for (int i = 0; i < dfa["alphabet"].size(); i++) {
         states.push_back(findTransition(state, dfa["alphabet"][i]));
     }
 
-    for(int i = 0; i < states.size(); i++){
+    for (int i = 0; i < states.size(); i++) {
         subsetConstruction(states[i]);
     }
 }
 
+//zet dfa om in nfa
 DFA NFA::toDFA() {
     vector<string> startState;
     dfa = {
@@ -103,8 +108,8 @@ DFA NFA::toDFA() {
     dfa["transitions"] = {"", ""};
     subsetConstruction(startState);
 
-    for(auto elem : allStates){
-        if(elem == startState)
+    for (auto elem : allStates) {
+        if (elem == startState)
             addState(vecToString(elem), true, accept(elem));
         else
             addState(vecToString(elem), false, accept(elem));
@@ -116,7 +121,7 @@ DFA NFA::toDFA() {
     dfa["transitions"].erase(dfa["transitions"].begin());
     dfa["transitions"].erase(dfa["transitions"].begin());
 
-    ofstream file("DFA.json");
+    ofstream file(path+".2DFA.json");
     file << dfa;
-    return DFA("DFA.json");
+    return DFA(path+".2DFA.json");
 }

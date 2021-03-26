@@ -170,6 +170,33 @@ DFA.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/DFA.cpp.s
 .PHONY : DFA.cpp.s
 
+ENFA.o: ENFA.cpp.o
+
+.PHONY : ENFA.o
+
+# target to build an object file
+ENFA.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/ENFA.cpp.o
+.PHONY : ENFA.cpp.o
+
+ENFA.i: ENFA.cpp.i
+
+.PHONY : ENFA.i
+
+# target to preprocess a source file
+ENFA.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/ENFA.cpp.i
+.PHONY : ENFA.cpp.i
+
+ENFA.s: ENFA.cpp.s
+
+.PHONY : ENFA.s
+
+# target to generate assembly for a file
+ENFA.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/ENFA.cpp.s
+.PHONY : ENFA.cpp.s
+
 NFA.o: NFA.cpp.o
 
 .PHONY : NFA.o
@@ -236,6 +263,9 @@ help:
 	@echo "... DFA.o"
 	@echo "... DFA.i"
 	@echo "... DFA.s"
+	@echo "... ENFA.o"
+	@echo "... ENFA.i"
+	@echo "... ENFA.s"
 	@echo "... NFA.o"
 	@echo "... NFA.i"
 	@echo "... NFA.s"
