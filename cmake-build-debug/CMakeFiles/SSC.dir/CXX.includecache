@@ -23,8 +23,6 @@ fstream
 -
 map
 -
-any
--
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h
 string
@@ -34,6 +32,8 @@ DFA.h
 json.hpp
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 map
+-
+set
 -
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp

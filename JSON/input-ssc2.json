@@ -1,65 +1,71 @@
 {
   "type": "NFA",
   "alphabet": [
-    "c"
+    "0",
+    "1"
   ],
   "states": [
     {
-      "name": "0",
+      "name": "a",
       "starting": true,
       "accepting": false
     },
     {
-      "name": "1",
+      "name": "b",
+      "starting": false,
+      "accepting": false
+    },
+    {
+      "name": "c",
       "starting": false,
       "accepting": true
-    },
-    {
-      "name": "2",
-      "starting": false,
-      "accepting": false
-    },
-    {
-      "name": "3",
-      "starting": false,
-      "accepting": false
-    },
-    {
-      "name": "4",
-      "starting": false,
-      "accepting": false
     }
   ],
   "transitions": [
     {
-      "from": "0",
-      "to": "1",
-      "input": "c"
+      "from": "a",
+      "to": "b",
+      "input": "0"
     },
     {
-      "from": "0",
-      "to": "3",
-      "input": "c"
+      "from": "a",
+      "to": "b",
+      "input": "1"
     },
     {
-      "from": "1",
-      "to": "4",
-      "input": "c"
+      "from": "a",
+      "to": "a",
+      "input": "0"
     },
     {
-      "from": "2",
-      "to": "1",
-      "input": "c"
+      "from": "b",
+      "to": "a",
+      "input": "1"
     },
     {
-      "from": "3",
-      "to": "2",
-      "input": "c"
+      "from": "b",
+      "to": "c",
+      "input": "1"
     },
     {
-      "from": "4",
-      "to": "2",
-      "input": "c"
+      "from": "b",
+      "to": "c",
+      "input": "0"
+    },
+    {
+      "from": "c",
+      "to": "b",
+      "input": "0"
+    },
+    {
+      "from": "c",
+      "to": "c",
+      "input": "0"
+    },
+    {
+      "from": "c",
+      "to": "c",
+      "input": "1"
     }
   ]
 }

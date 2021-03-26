@@ -8,6 +8,7 @@
 #include "DFA.h"
 #include "json.hpp"
 #include <map>
+#include <set>
 
 using namespace std;
 using json = nlohmann::json;
@@ -17,12 +18,15 @@ public:
     string path;
     json dfa;
     json nfa;
-    map<string, string> trans;
+    set<vector<string>> allStates;
 
     NFA(string p);
 
     DFA toDFA();
-    void findStates(vector<string> state);
+    void subsetConstruction(vector<string> state);
+    void addState(string name, bool starting, bool accepting);
+    void addTransition(string from, string to, string input);
+    vector<string> findTransition(vector<string> state, string input);
     string vecToString(vector<string> new_state);
     bool accept(vector<string> new_state);
 };
