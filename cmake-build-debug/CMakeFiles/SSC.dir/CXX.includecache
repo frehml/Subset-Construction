@@ -6,6 +6,16 @@
 
 #IncludeRegexTransform: 
 
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.cpp
+DFA.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
+iostream
+-
+fstream
+-
+json.hpp
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
+
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
 string
 -
@@ -13,29 +23,9 @@ iostream
 -
 json.hpp
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
-
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
-string
--
-DFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
-json.hpp
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
-map
--
 set
 -
-
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h
-string
--
-DFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
-json.hpp
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 map
--
-set
 -
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
@@ -371,10 +361,4 @@ limits
 -
 type_traits
 -
-
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/main.cpp
-NFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h
-ENFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
 
