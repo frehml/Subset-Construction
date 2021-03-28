@@ -25,20 +25,19 @@ public:
 
     set<vector<string>> states;
 
-    void product(string dfa1, string dfa2);
+    void product(const string &d1, const string &d2);
 
-    DFA(string p);
+    explicit DFA(string p);
     DFA(DFA dfa1, DFA dfa2, bool doorsnede);
 
-    void multiply(string from1, string to1, string from2, string to2, string input);
     void addTransition(string from, string to, string input);
     pair<bool, bool> check(vector<string> state);
-    string vecToString(vector<string> vec);
+    static string vecToString(vector<string> vec);
     void addStates();
     bool accepts(string numbers);
     void print();
-    string findStart(json d);
-    string stateLoop(json d, string state, string input);
+    static string findStart(json d);
+    static string stateLoop(json d, string state, string input);
     void findTransition(vector<string> state);
 };
 

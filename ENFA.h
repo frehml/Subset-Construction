@@ -21,7 +21,7 @@ public:
     string eps;
     set<vector<string>> allStates;
 
-    ENFA(string p);
+    explicit ENFA(string p);
 
     DFA toDFA();
     void subsetConstruction(vector<string> state);
@@ -29,8 +29,9 @@ public:
     void addTransition(string from, string to, string input);
     vector<string> tryEpsilon(vector<string> state1);
     vector<string> findTransition(vector<string> state, string input);
-    string vecToString(vector<string> new_state);
+    static string vecToString(vector<string> new_state);
     bool accept(vector<string> new_state);
+    void printStats();
 };
 
 

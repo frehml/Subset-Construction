@@ -224,6 +224,33 @@ NFA.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/NFA.cpp.s
 .PHONY : NFA.cpp.s
 
+RE.o: RE.cpp.o
+
+.PHONY : RE.o
+
+# target to build an object file
+RE.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/RE.cpp.o
+.PHONY : RE.cpp.o
+
+RE.i: RE.cpp.i
+
+.PHONY : RE.i
+
+# target to preprocess a source file
+RE.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/RE.cpp.i
+.PHONY : RE.cpp.i
+
+RE.s: RE.cpp.s
+
+.PHONY : RE.s
+
+# target to generate assembly for a file
+RE.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSC.dir/build.make CMakeFiles/SSC.dir/RE.cpp.s
+.PHONY : RE.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -269,6 +296,9 @@ help:
 	@echo "... NFA.o"
 	@echo "... NFA.i"
 	@echo "... NFA.s"
+	@echo "... RE.o"
+	@echo "... RE.i"
+	@echo "... RE.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

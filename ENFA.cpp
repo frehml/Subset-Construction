@@ -19,6 +19,10 @@ ENFA::ENFA(string p) {
     eps = enfa["eps"];
 }
 
+void ENFA::printStats(){
+    cout << "no_of_states=" << enfa["states"].size();
+}
+
 //checkt of state een accepterende state is
 bool ENFA::accept(vector<string> new_state) {
     bool accepting = false;

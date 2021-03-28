@@ -1,12 +1,23 @@
-#include "NFA.h"
+#include "RE.h"
 #include "ENFA.h"
-
+#include <iostream>
 using namespace std;
 
 int main() {
-    DFA dfa1("input-product-and1.json");
-    DFA dfa2("input-product-and2.json");
-    DFA product(dfa1,dfa2,true); // true betekent doorsnede, false betekent unie
-    product.print();
+    RE re("(m+y)*+(e+y+m+i)s", 'e');
+    ENFA enfa = re.toENFA();
+
+    enfa.printStats();
+    /*
+    // geven true
+    cout << boolalpha << enfa.accepts("ys") << endl;
+    cout << boolalpha << enfa.accepts("mmyyymmmym") << endl;
+    cout << boolalpha << enfa.accepts("s") << endl;
+
+    // geven false
+    cout << boolalpha << enfa.accepts("ss") << endl;
+    cout << boolalpha << enfa.accepts("ims") << endl;
+    cout << boolalpha << enfa.accepts("mimis") << endl;
+    */
     return 0;
 }

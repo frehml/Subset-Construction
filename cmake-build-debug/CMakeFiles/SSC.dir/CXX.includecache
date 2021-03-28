@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.cpp
-DFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
-iostream
--
-fstream
--
-json.hpp
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
-
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
 string
 -
@@ -26,6 +16,34 @@ json.hpp
 set
 -
 map
+-
+
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+string
+-
+DFA.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
+json.hpp
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
+map
+-
+set
+-
+
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.cpp
+RE.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
+fstream
+-
+set
+-
+
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
+ENFA.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+string
+-
+set
 -
 
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp

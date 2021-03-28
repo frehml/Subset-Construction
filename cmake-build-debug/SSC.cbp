@@ -98,6 +98,12 @@
 		<Unit filename="/Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h">
 			<Option target="SSC"/>
 		</Unit>
+		<Unit filename="/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.cpp">
+			<Option target="SSC"/>
+		</Unit>
+		<Unit filename="/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h">
+			<Option target="SSC"/>
+		</Unit>
 		<Unit filename="/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp">
 			<Option target="SSC"/>
 		</Unit>
