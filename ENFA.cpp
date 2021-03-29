@@ -57,6 +57,12 @@ bool ENFA::accepts(string input){
         nodes = nextNodes(nodes, str);
     }
     nodes = tryEps(nodes);
+
+    for(auto node : nodes){
+        cout << node << ", ";
+    }
+    cout << endl;
+
     return (count(nodes.begin(), nodes.end(), enfa["states"].size()-1)>=1);
 }
 

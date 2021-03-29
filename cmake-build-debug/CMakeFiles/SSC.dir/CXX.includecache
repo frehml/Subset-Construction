@@ -30,14 +30,6 @@ map
 set
 -
 
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.cpp
-RE.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
-fstream
--
-set
--
-
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
 ENFA.h
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
@@ -378,5 +370,13 @@ cstring
 limits
 -
 type_traits
+-
+
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/main.cpp
+RE.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
+ENFA.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+iostream
 -
 

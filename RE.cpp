@@ -170,10 +170,9 @@ pair<RE::block, RE::block> RE::breakUp(block a) {
     findExpressions(startPoint, endPoint, &expression1, &expression2, &operation, a);
     block x;
     block y;
+
     buildBlock(&x, &y, a, expression1, expression2, operation);
     doOperation(&x, &y, operation);
-
-    cout << startPoint << endl;
 
     p.first = x;
     p.second = y;
@@ -184,7 +183,8 @@ void RE::findTransitions(block &a) {
     pair<RE::block, RE::block> p;
 
     if (a.expression.size() <= 1) {
-        transitions.push_back(a);
+        if(a.expression != "")
+            transitions.push_back(a);
         return;
     }
 
