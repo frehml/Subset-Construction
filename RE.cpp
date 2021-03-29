@@ -43,7 +43,20 @@ void RE::kleene(block *R) {
 }
 
 string RE::removeBracket(string expression) {
-    if (expression[0] == '(' && expression[expression.size() - 1] == ')')
+    int open = 0;
+    int close = 0;
+    bool check = true;
+    for(int i = 0; i < expression.size(); i++){
+        if(expression[i] == '(')
+            open++;
+        else if(expression[i] == ')')
+            close++;
+
+        if(close == open && i < expression.size()-1)
+            check = false;
+    }
+
+    if (expression[0] == '(' && expression[expression.size() - 1] == ')' && check)
         return expression.substr(1, expression.size() - 2);
     return expression;
 }
@@ -71,11 +84,23 @@ void RE::doOperation(block *R, block *S, string const &operation) {
     }
 }
 
+bool RE::noOperators(string expression){
+    for(auto c : expression){
+        if(c == '(' || c == ')' || c == '+'|| c == '*' )
+            return false;
+    }
+    return true;
+}
+
 void RE::findStartEnd(block *a, int *startPoint, int *endPoint) {
     int open = 0;
     int close = 0;
 
-    if (noBrackets(a->expression)) {
+    if(noOperators(a->expression)){
+        *startPoint = 0;
+        *endPoint = 1;
+    }
+    else if (noBrackets(a->expression)) {
         *startPoint = 0;
         for (int i = 0; i < a->expression.size(); i++) {
             if (a->expression[i] == '+' || a->expression[i] == '*')
@@ -148,12 +173,14 @@ pair<RE::block, RE::block> RE::breakUp(block a) {
     buildBlock(&x, &y, a, expression1, expression2, operation);
     doOperation(&x, &y, operation);
 
+    cout << startPoint << endl;
+
     p.first = x;
     p.second = y;
     return p;
 }
 
-void RE::findTransitions(block const &a) {
+void RE::findTransitions(block &a) {
     pair<RE::block, RE::block> p;
 
     if (a.expression.size() <= 1) {

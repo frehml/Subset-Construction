@@ -32,6 +32,11 @@ public:
     static string vecToString(vector<string> new_state);
     bool accept(vector<string> new_state);
     void printStats();
+    int transitionCount(string elem);
+    int printDegree(int degree);
+    bool accepts(string input);
+    vector<int> nextNodes(vector<int> node, string input);
+    vector<int> tryEps(vector<int> nodes);
 };
 
 

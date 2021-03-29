@@ -19,8 +19,84 @@ ENFA::ENFA(string p) {
     eps = enfa["eps"];
 }
 
+vector<int> ENFA::nextNodes(vector<int> nodes, string input){
+    vector<int> new_nodes;
+    for(auto node : nodes){
+        for(auto transition : enfa["transitions"]) {
+            if(transition["from"] == node && transition["input"] == input)
+                new_nodes.push_back(transition["to"]);
+        }
+    }
+    return new_nodes;
+}
+
+vector<int> ENFA::tryEps(vector<int> nodes){
+    int check = true;
+    for(auto node : nodes){
+        for(auto transition : enfa["transitions"]){
+            if(transition["from"] == node && transition["input"] == eps && !count(nodes.begin(), nodes.end(), transition["to"])){
+                nodes.push_back(transition["to"]);
+                check = false;
+            }
+        }
+    }
+
+    sort( nodes.begin(), nodes.end() );
+    nodes.erase( unique( nodes.begin(), nodes.end() ), nodes.end() );
+
+    if(check)
+        return nodes;
+    return tryEps(nodes);
+}
+
+bool ENFA::accepts(string input){
+    vector<int> nodes = {0};
+    for(auto c : input){
+        string str(1, c);
+        nodes = tryEps(nodes);
+        nodes = nextNodes(nodes, str);
+    }
+    nodes = tryEps(nodes);
+    return (count(nodes.begin(), nodes.end(), enfa["states"].size()-1)>=1);
+}
+
+int ENFA::transitionCount(string elem){
+    int count = 0;
+    for(auto transition : enfa["transitions"]){
+        if(transition["input"] == elem)
+            count++;
+    }
+    return count;
+}
+
+int ENFA::printDegree(int degree){
+    vector<int> vec(enfa["states"].size());
+    for(int i = 0; i < enfa["states"].size(); i++){
+        for(auto transition : enfa["transitions"]){
+            if(enfa["states"][i]["name"] == transition["from"] && transition["from"] != transition["to"])
+                vec[i]++;
+        }
+    }
+
+    return count(vec.begin(), vec.end(), degree);
+}
+
 void ENFA::printStats(){
-    cout << "no_of_states=" << enfa["states"].size();
+    cout << "no_of_states=" << enfa["states"].size() << endl;
+
+    vector<string> alph = enfa["alphabet"];
+    for(auto elem : alph){
+        cout << "no_of_transitions[" << elem << "]=" << transitionCount(elem) << endl;
+    }
+
+    int check = 0;
+    int i = 0;
+    while(check < enfa["states"].size()){
+        int result = printDegree(i);
+        cout << "degree[" << i << "]=" << result << endl;
+        check += result;
+        i++;
+    }
 }
 
 //checkt of state een accepterende state is

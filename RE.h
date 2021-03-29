@@ -34,7 +34,7 @@ public:
     void sum(block* R, block* S);
     void concat(block* R, block* S);
     void kleene(block* R);
-    void findTransitions(block const &a);
+    void findTransitions(block &a);
     pair<block, block> breakUp(block a);
     static string removeBracket(string expression);
     static bool noBrackets(string const &expression);
@@ -47,6 +47,7 @@ public:
     void buildStates(int end);
     void addState(int name, bool accepting, bool starting);
     void buildAlph();
+    static bool noOperators(string);
 };
 
 
