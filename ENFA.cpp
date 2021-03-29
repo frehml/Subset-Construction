@@ -19,51 +19,39 @@ ENFA::ENFA(string p) {
     eps = enfa["eps"];
 }
 
-vector<int> ENFA::nextNodes(vector<int> nodes, string input){
-    vector<int> new_nodes;
-    for(auto node : nodes){
-        for(auto transition : enfa["transitions"]) {
-            if(transition["from"] == node && transition["input"] == input)
-                new_nodes.push_back(transition["to"]);
+void ENFA::nextNodes(vector<int>* nodes, string input){
+    vector<int> new_states;
+    for(auto node : *nodes){
+        for(auto transition : enfa["transitions"]){
+            if(transition["from"] == node && transition["input"] == input && count(new_states.begin(), new_states.end(), transition["to"]) == 0)
+                new_states.push_back(transition["to"]);
         }
     }
-    return new_nodes;
+    *nodes = new_states;
 }
 
-vector<int> ENFA::tryEps(vector<int> nodes){
-    int check = true;
-    for(auto node : nodes){
+void ENFA::tryEps(vector<int>* nodes){
+    for(auto node : *nodes){
         for(auto transition : enfa["transitions"]){
-            if(transition["from"] == node && transition["input"] == eps && !count(nodes.begin(), nodes.end(), transition["to"])){
-                nodes.push_back(transition["to"]);
-                check = false;
+            if(transition["from"] == node && transition["input"] == eps && count(nodes->begin(), nodes->end(), transition["to"]) == 0){
+                nodes->push_back(transition["to"]);
+                return tryEps(nodes);
             }
         }
     }
-
-    sort( nodes.begin(), nodes.end() );
-    nodes.erase( unique( nodes.begin(), nodes.end() ), nodes.end() );
-
-    if(check)
-        return nodes;
-    return tryEps(nodes);
+    return;
 }
 
 bool ENFA::accepts(string input){
-    vector<int> nodes = {0};
+    vector<int> states = {0};
+    tryEps(&states);
     for(auto c : input){
-        string str(1, c);
-        nodes = tryEps(nodes);
-        nodes = nextNodes(nodes, str);
+        string character(1, c);
+        nextNodes(&states, character);
+        tryEps(&states);
     }
-    nodes = tryEps(nodes);
 
-    for(auto node : nodes){
-        cout << node << ", ";
-    }
-    cout << endl;
-
-    return (count(nodes.begin(), nodes.end(), enfa["states"].size()-1)>=1);
+    return(count(states.begin(), states.end(), enfa["states"].size()-1)==1);
 }
 
 int ENFA::transitionCount(string elem){
@@ -89,6 +77,8 @@ int ENFA::printDegree(int degree){
 
 void ENFA::printStats(){
     cout << "no_of_states=" << enfa["states"].size() << endl;
+
+    cout << "no_of_transitions[" << eps << "]=" << transitionCount(eps) << endl;
 
     vector<string> alph = enfa["alphabet"];
     for(auto elem : alph){

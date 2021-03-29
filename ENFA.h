@@ -35,8 +35,8 @@ public:
     int transitionCount(string elem);
     int printDegree(int degree);
     bool accepts(string input);
-    vector<int> nextNodes(vector<int> node, string input);
-    vector<int> tryEps(vector<int> nodes);
+    void nextNodes(vector<int>* node, string input);
+    void tryEps(vector<int>* nodes);
 };
 
 

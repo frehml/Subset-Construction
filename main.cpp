@@ -4,19 +4,18 @@
 using namespace std;
 
 int main() {
-    RE re("(kd+x+k)(i)*(k+i)",'x');
+    RE re("(m+y)*+(e+y+m+i)s",'e');
     ENFA enfa = re.toENFA();
     enfa.printStats();
-
     // geven true
-    cout << boolalpha << enfa.accepts("kdk") << endl;
-    cout << boolalpha << enfa.accepts("i") << endl;
-    cout << boolalpha << enfa.accepts("kiiiiii") << endl;
+    cout << boolalpha << enfa.accepts("ys") << endl;
+    cout << boolalpha << enfa.accepts("mmyyymmmym") << endl;
+    cout << boolalpha << enfa.accepts("s") << endl;
 
     // geven false
-    cout << boolalpha << enfa.accepts("kikk") << endl;
-    cout << boolalpha << enfa.accepts("") << endl;
-    cout << boolalpha << enfa.accepts("kdiiiiiiki") << endl;
+    cout << boolalpha << enfa.accepts("ss") << endl;
+    cout << boolalpha << enfa.accepts("ims") << endl;
+    cout << boolalpha << enfa.accepts("mimis") << endl;
 
     return 0;
 }

@@ -18,6 +18,16 @@ set
 map
 -
 
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.cpp
+ENFA.h
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+json.hpp
+/Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
+fstream
+-
+map
+-
+
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
 string
 -
@@ -26,14 +36,6 @@ DFA.h
 json.hpp
 /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 map
--
-set
--
-
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
-ENFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
-string
 -
 set
 -
@@ -370,13 +372,5 @@ cstring
 limits
 -
 type_traits
--
-
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/main.cpp
-RE.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
-ENFA.h
-/Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
-iostream
 -
 
