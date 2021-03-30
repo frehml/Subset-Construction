@@ -20,14 +20,14 @@ public:
     json nfa;
     set<vector<string>> allStates;
 
-    NFA(string p);
+    explicit NFA(string p);
 
     DFA toDFA();
-    void subsetConstruction(vector<string> state);
+    void subsetConstruction(vector<string> const &state);
     void addState(string name, bool starting, bool accepting);
     void addTransition(string from, string to, string input);
     vector<string> findTransition(vector<string> state, string input);
-    string vecToString(vector<string> new_state);
+    static string vecToString(vector<string> new_state);
     bool accept(vector<string> new_state);
 };
 

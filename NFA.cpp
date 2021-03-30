@@ -74,19 +74,19 @@ vector<string> NFA::findTransition(vector<string> state, string input) {
 }
 
 //vind ttransities en bijgevolg states recursief
-void NFA::subsetConstruction(vector<string> state) {
+void NFA::subsetConstruction(vector<string> const &state) {
     vector<vector<string>> states;
 
     if (allStates.find(state) != allStates.end())
         return;
     allStates.insert(state);
 
-    for (int i = 0; i < dfa["alphabet"].size(); i++) {
-        states.push_back(findTransition(state, dfa["alphabet"][i]));
+    for (auto const &alph : dfa["alphabet"]) {
+        states.push_back(findTransition(state, alph));
     }
 
-    for (int i = 0; i < states.size(); i++) {
-        subsetConstruction(states[i]);
+    for (auto const &s : states) {
+        subsetConstruction(s);
     }
 }
 
@@ -108,7 +108,7 @@ DFA NFA::toDFA() {
     dfa["transitions"] = {"", ""};
     subsetConstruction(startState);
 
-    for (auto elem : allStates) {
+    for (auto const &elem : allStates) {
         if (elem == startState)
             addState(vecToString(elem), true, accept(elem));
         else
@@ -121,7 +121,8 @@ DFA NFA::toDFA() {
     dfa["transitions"].erase(dfa["transitions"].begin());
     dfa["transitions"].erase(dfa["transitions"].begin());
 
-    ofstream file(path+".2DFA.json");
+    ofstream file(path + ".2DFA.json");
     file << dfa;
-    return DFA(path+".2DFA.json");
+    file.close();
+    return DFA(path + ".2DFA.json");
 }

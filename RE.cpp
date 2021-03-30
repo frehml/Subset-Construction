@@ -12,18 +12,21 @@ RE::RE(string r, char e) {
     eps = epsilon;
 }
 
+//voegt een state toe aan het JSON bestand
 void RE::addState(int name, bool accepting, bool starting) {
-    renfa["states"].push_back({{"name",  name},
-                                   {"starting",    starting},
-                                   {"accepting", accepting}});
+    renfa["states"].push_back({{"name",      name},
+                               {"starting",  starting},
+                               {"accepting", accepting}});
 }
 
+//voegt een transitie toe aan het JSON bestand
 void RE::addTransition(int from, int to, string input) {
     renfa["transitions"].push_back({{"from",  from},
-                                   {"to",    to},
-                                   {"input", input}});
+                                    {"to",    to},
+                                    {"input", input}});
 }
 
+//functie voor de operatie "+"
 void RE::sum(block *R, block *S) {
     addTransition(R->start - 1, R->start, eps);
     addTransition(R->start - 1, S->start, eps);
@@ -31,10 +34,12 @@ void RE::sum(block *R, block *S) {
     addTransition(R->end, S->end + 1, eps);
 }
 
+//functie voor de operatie (a)(b)
 void RE::concat(block *R, block *S) {
     addTransition(R->end, S->start, eps);
 }
 
+//functie voor de operatie "*"
 void RE::kleene(block *R) {
     addTransition(R->start - 1, R->start, eps);
     addTransition(R->start - 1, R->end + 1, eps);
@@ -42,17 +47,18 @@ void RE::kleene(block *R) {
     addTransition(R->end, R->start, eps);
 }
 
+//verwijderd haakjes van een string
 string RE::removeBracket(string expression) {
     int open = 0;
     int close = 0;
     bool check = true;
-    for(int i = 0; i < expression.size(); i++){
-        if(expression[i] == '(')
+    for (int i = 0; i < expression.size(); i++) {
+        if (expression[i] == '(')
             open++;
-        else if(expression[i] == ')')
+        else if (expression[i] == ')')
             close++;
 
-        if(close == open && i < expression.size()-1)
+        if (close == open && i < expression.size() - 1)
             check = false;
     }
 
@@ -61,10 +67,12 @@ string RE::removeBracket(string expression) {
     return expression;
 }
 
+//checkt of een string geen haakjes geeft
 bool RE::noBrackets(string const &expression) {
     return all_of(expression.begin(), expression.end(), [](char i) { return (i != '(' && i != ')'); });
 }
 
+//berekent de hoeveelheid states are nodig gaan zijn
 int RE::calculateOperations(string const &expression) {
     int op = 0;
     for (auto elem : expression) {
@@ -74,6 +82,7 @@ int RE::calculateOperations(string const &expression) {
     return op;
 }
 
+//voert de operatie uit
 void RE::doOperation(block *R, block *S, string const &operation) {
     if (operation == "*")
         kleene(R);
@@ -84,23 +93,24 @@ void RE::doOperation(block *R, block *S, string const &operation) {
     }
 }
 
-bool RE::noOperators(string expression){
-    for(auto c : expression){
-        if(c == '(' || c == ')' || c == '+'|| c == '*' )
+//checkt of er "geen operators zijn" dus concat
+bool RE::noOperators(string const &expression) {
+    for (auto const &c : expression) {
+        if (c == '(' || c == ')' || c == '+' || c == '*')
             return false;
     }
     return true;
 }
 
+//vindt de start en end voor de nieuwe blocks
 void RE::findStartEnd(block *a, int *startPoint, int *endPoint) {
     int open = 0;
     int close = 0;
 
-    if(noOperators(a->expression)){
+    if (noOperators(a->expression)) {
         *startPoint = 0;
         *endPoint = 1;
-    }
-    else if (noBrackets(a->expression)) {
+    } else if (noBrackets(a->expression)) {
         *startPoint = 0;
         for (int i = 0; i < a->expression.size(); i++) {
             if (a->expression[i] == '+' || a->expression[i] == '*')
@@ -127,6 +137,7 @@ void RE::findStartEnd(block *a, int *startPoint, int *endPoint) {
     }
 }
 
+//vindt de expressie voor de nieuwe blocks
 void RE::findExpressions(int startPoint, int endPoint, string *expression1, string *expression2, string *operation,
                          block a) {
     if (startPoint == 0) {
@@ -145,6 +156,7 @@ void RE::findExpressions(int startPoint, int endPoint, string *expression1, stri
     }
 }
 
+//bouwt nieuwe blocks
 void RE::buildBlock(block *x, block *y, block const &a, string const &expression1, string const &expression2,
                     string const &operation) {
     if (operation == "*") {
@@ -158,6 +170,7 @@ void RE::buildBlock(block *x, block *y, block const &a, string const &expression
     }
 }
 
+//breekt een block in twee
 pair<RE::block, RE::block> RE::breakUp(block a) {
     pair<RE::block, RE::block> p;
     int startPoint;
@@ -179,11 +192,12 @@ pair<RE::block, RE::block> RE::breakUp(block a) {
     return p;
 }
 
+//zoekt alle transities recursief
 void RE::findTransitions(block &a) {
     pair<RE::block, RE::block> p;
 
     if (a.expression.size() <= 1) {
-        if(a.expression != "")
+        if (!a.expression.empty())
             transitions.push_back(a);
         return;
     }
@@ -193,34 +207,37 @@ void RE::findTransitions(block &a) {
     findTransitions(p.second);
 }
 
+//bouwt transities
 void RE::buildTransitions() {
-    for (auto elem : transitions) {
+    for (auto const &elem : transitions) {
         addTransition(elem.start, elem.end, elem.expression);
         alph.insert(elem.expression);
     }
 }
 
-void RE::buildStates(int end){
-    for(int i = 1; i < end; i++){
+void RE::buildStates(int end) {
+    for (int i = 1; i < end; i++) {
         addState(i, false, false);
     }
 }
 
-void RE::buildAlph(){
-    for(auto a : alph){
-        if(a!="" && a != eps)
+//bouwt alfabet
+void RE::buildAlph() {
+    for (auto a : alph) {
+        if (!a.empty() && a != eps)
             renfa["alphabet"].push_back(a);
     }
 }
 
+//zet regulier expressie om in een NFA
 ENFA RE::toENFA() {
     int end = calculateOperations(regex) - 1;
     renfa = {{"type",        "ENFA"},
-            {"eps",         eps},
-            {"transitions", {"", ""}},
-            {"alphabet", {"", ""}},
-            {"states",      {{{"name", 0}, {"starting", true}, {"accepting", false}},
-                             {{"name", end}, {"starting", false}, {"accepting", true}}}}};
+             {"eps",         eps},
+             {"transitions", {"", ""}},
+             {"alphabet",    {"", ""}},
+             {"states",      {{{"name", 0}, {"starting", true}, {"accepting", false}},
+                                  {{"name", end}, {"starting", false}, {"accepting", true}}}}};
 
     block start = {0, end, regex};
 

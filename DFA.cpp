@@ -20,7 +20,6 @@ DFA::DFA(const DFA dfa1, const DFA dfa2, bool doorsnede) {
     product(string(path1), string(path2));
 }
 
-
 //kijkt of een string geaccepteerd wordt
 bool DFA::accepts(string numbers) {
     string cur_node;

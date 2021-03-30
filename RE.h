@@ -47,7 +47,7 @@ public:
     void buildStates(int end);
     void addState(int name, bool accepting, bool starting);
     void buildAlph();
-    static bool noOperators(string);
+    static bool noOperators(string const &expression);
 };
 
 

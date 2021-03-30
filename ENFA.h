@@ -24,7 +24,7 @@ public:
     explicit ENFA(string p);
 
     DFA toDFA();
-    void subsetConstruction(vector<string> state);
+    void subsetConstruction(vector<string> const &state);
     void addState(string name, bool starting, bool accepting);
     void addTransition(string from, string to, string input);
     vector<string> tryEpsilon(vector<string> state1);

@@ -23,6 +23,7 @@ CMakeFiles/SSC.dir/RE.cpp.o: ../json.hpp
 
 CMakeFiles/SSC.dir/main.cpp.o: ../DFA.h
 CMakeFiles/SSC.dir/main.cpp.o: ../ENFA.h
+CMakeFiles/SSC.dir/main.cpp.o: ../NFA.h
 CMakeFiles/SSC.dir/main.cpp.o: ../RE.h
 CMakeFiles/SSC.dir/main.cpp.o: ../json.hpp
 CMakeFiles/SSC.dir/main.cpp.o: ../main.cpp
