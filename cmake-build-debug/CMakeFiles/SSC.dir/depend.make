@@ -3,16 +3,21 @@
 
 CMakeFiles/SSC.dir/DFA.cpp.o: ../DFA.cpp
 CMakeFiles/SSC.dir/DFA.cpp.o: ../DFA.h
+CMakeFiles/SSC.dir/DFA.cpp.o: ../ENFA.h
+CMakeFiles/SSC.dir/DFA.cpp.o: ../RE.h
 CMakeFiles/SSC.dir/DFA.cpp.o: ../json.hpp
 
 CMakeFiles/SSC.dir/ENFA.cpp.o: ../DFA.h
 CMakeFiles/SSC.dir/ENFA.cpp.o: ../ENFA.cpp
 CMakeFiles/SSC.dir/ENFA.cpp.o: ../ENFA.h
+CMakeFiles/SSC.dir/ENFA.cpp.o: ../RE.h
 CMakeFiles/SSC.dir/ENFA.cpp.o: ../json.hpp
 
 CMakeFiles/SSC.dir/NFA.cpp.o: ../DFA.h
+CMakeFiles/SSC.dir/NFA.cpp.o: ../ENFA.h
 CMakeFiles/SSC.dir/NFA.cpp.o: ../NFA.cpp
 CMakeFiles/SSC.dir/NFA.cpp.o: ../NFA.h
+CMakeFiles/SSC.dir/NFA.cpp.o: ../RE.h
 CMakeFiles/SSC.dir/NFA.cpp.o: ../json.hpp
 
 CMakeFiles/SSC.dir/RE.cpp.o: ../DFA.h

@@ -1,14 +1,17 @@
 #ifndef OPDRACH1_DFA_H
 #define OPDRACH1_DFA_H
 
+#include "json.hpp"
+#include "RE.h"
 #include <string>
 #include <iostream>
-#include "json.hpp"
 #include <set>
 #include <map>
 
 using json = nlohmann::json;
 using namespace std;
+
+class RE;
 
 class DFA {
 
@@ -39,6 +42,7 @@ public:
     static string findStart(json d);
     static string stateLoop(json d, string state, string input);
     void findTransition(vector<string> state);
+    RE toRE();
 };
 
 

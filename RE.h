@@ -10,6 +10,9 @@
 #include <set>
 
 using namespace std;
+using json = nlohmann::json;
+
+class ENFA;
 
 class RE {
 public:
@@ -48,6 +51,7 @@ public:
     void addState(int name, bool accepting, bool starting);
     void buildAlph();
     static bool noOperators(string const &expression);
+    void print();
 };
 
 

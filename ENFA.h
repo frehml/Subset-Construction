@@ -13,6 +13,8 @@
 using namespace std;
 using json = nlohmann::json;
 
+class DFA;
+
 class ENFA {
 public:
     string path;

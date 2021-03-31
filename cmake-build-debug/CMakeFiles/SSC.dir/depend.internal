@@ -4,16 +4,21 @@
 CMakeFiles/SSC.dir/DFA.cpp.o
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.cpp
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
+ /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+ /Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 CMakeFiles/SSC.dir/ENFA.cpp.o
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.cpp
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
+ /Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 CMakeFiles/SSC.dir/NFA.cpp.o
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h
+ /Users/frederic/Documents/Informatica/Sem2/TA/SSC/ENFA.h
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.cpp
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/NFA.h
+ /Users/frederic/Documents/Informatica/Sem2/TA/SSC/RE.h
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/json.hpp
 CMakeFiles/SSC.dir/RE.cpp.o
  /Users/frederic/Documents/Informatica/Sem2/TA/SSC/DFA.h

@@ -1,6 +1,7 @@
 #include "RE.h"
 #include "ENFA.h"
 #include "NFA.h"
+#include "DFA.h"
 #include <iostream>
 
 using namespace std;

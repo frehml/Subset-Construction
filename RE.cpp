@@ -256,3 +256,7 @@ ENFA RE::toENFA() {
     ENFA enfa("enfa.json");
     return enfa;
 }
+
+void RE::print(){
+    cout << regex;
+}

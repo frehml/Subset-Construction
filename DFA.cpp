@@ -188,5 +188,11 @@ void DFA::product(const string &d1, const string &d2) {
 
     ofstream file("product.json");
     file << dfa;
+    file.close();
     path = "product.json";
+}
+
+RE DFA::toRE(){
+    RE re("a+b", 'e');
+    return re;
 }
