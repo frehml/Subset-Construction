@@ -202,7 +202,6 @@ void DFA::removeState(string const &state, string const &addative) {
             trans.push_back(transition1);
 
         if(transition1.from != state ^ transition1.to != state){
-            vector<transition> options;
             for (auto const &transition2 : transitions.back()) {
                 if (&transition1 != &transition2) {
                     if (transition1.from != state && transition1.to == state && transition2.from == state && transition2.to != state) {
@@ -237,8 +236,6 @@ void DFA::startTransitions() {
         t.from = tran["from"];
         t.to = tran["to"];
         t.expression = tran["input"];
-        if (t.to == t.from)
-            t.expression += "*";
         trans.push_back(t);
     }
     transitions.push_back(trans);
@@ -265,25 +262,34 @@ void DFA::getStates(){
 }
 
 void DFA::sumEquals(){
-    vector<transition> t = transitions.back();
     vector<transition> trans;
-    for(int x = 0; x <= t.size(); x++){
-        transition transition;
-        string expression = t[x].expression;
-        for(int y = 0; y <= t.size(); y++){
-            if(y > x){
-                if(t[x].from == t[y].from && t[x].to == t[y].to){
-                    expression += "+"+t[y].expression;
-                }
+    for(auto const &transition1 : transitions.back()){
+        transition tran = transition1;
+        for(auto const &transition2 : transitions.back()){
+            if(transition1.from == transition2.from && transition1.to == transition2.to && transition1.expression != transition2.expression){
+                tran.from = transition1.from;
+                tran.to = transition1.to;
+                if(transition1.expression.size() <= transition2.expression.size())
+                    tran.expression = transition1.expression + "+" + transition2.expression;
+                else
+                    tran.expression = transition2.expression + "+" + transition1.expression;
             }
         }
-        transition = {t[x].from, t[x].to, expression};
+        if(tran.expression != transition1.expression)
+            tran.expression = "(" + tran.expression + ")";
+
         if(!trans.empty()){
-            if(transition.from != trans.back().from || transition.to != trans.back().to)
-                trans.push_back(transition);
+            bool check = true;
+            for(auto const &t : trans){
+                if(t.from == tran.from && t.to == tran.to)
+                    check = false;
+            }
+            if(check){
+                trans.push_back(tran);
+            }
         }
         else
-            trans.push_back(transition);
+            trans.push_back(tran);
     }
     transitions.push_back(trans);
 }
@@ -327,32 +333,34 @@ string DFA::format(){
             T = transition.expression;
     }
     if(R.empty() && T.empty())
-        return S+U;
-    return R+S+U+T+S+U;
+        return S+U+"*";
+    else if (R.empty())
+        return "("+S+U+"*"+T+")"+"*"+S+U+"*";
+    else
+        return "("+R+"+"+S+U+"*"+T+")"+"*"+S+U+"*";
 }
 
 string DFA::findAddative(string const &state){
     string addative;
     for(auto const &transition : transitions.back()){
         if(transition.from == state && transition.to == state)
-            addative += transition.expression + "+";
+            addative = transition.expression;
     }
     if(!addative.empty())
-        addative = "(" + (addative.substr(0, addative.size()-2)) + ")" + "*";
+        addative = "(" + addative +  ")" + "*";
     return addative;
 }
 
 RE DFA::toRE() {
     startTransitions();
     getStates();
+    sumEquals();
     for(auto state : s){
         string st = to_string(state);
         removeState(st, findAddative(st));
-        cout << "remove state " << state << endl << endl;
-        printTransitions();
+        sumEquals();
     }
-    sumEquals();
-    printTransitions();
+
     RE re(format(), 'e');
     return re;
 }
