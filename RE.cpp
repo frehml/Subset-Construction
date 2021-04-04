@@ -6,12 +6,23 @@
 #include <fstream>
 #include <set>
 
+/**
+ * constructor
+ * @param r
+ * @param e
+ */
 RE::RE(string r, char e) {
     regex = r;
     string epsilon(1, e);
     eps = epsilon;
 }
 
+/**
+ *
+ * @param name
+ * @param accepting
+ * @param starting
+ */
 //voegt een state toe aan het JSON bestand
 void RE::addState(int name, bool accepting, bool starting) {
     renfa["states"].push_back({{"name",      name},
@@ -19,6 +30,12 @@ void RE::addState(int name, bool accepting, bool starting) {
                                {"accepting", accepting}});
 }
 
+/**
+ *
+ * @param from
+ * @param to
+ * @param input
+ */
 //voegt een transitie toe aan het JSON bestand
 void RE::addTransition(int from, int to, string input) {
     renfa["transitions"].push_back({{"from",  from},
@@ -26,6 +43,11 @@ void RE::addTransition(int from, int to, string input) {
                                     {"input", input}});
 }
 
+/**
+ *
+ * @param R
+ * @param S
+ */
 //functie voor de operatie "+"
 void RE::sum(block *R, block *S) {
     addTransition(R->start - 1, R->start, eps);
@@ -34,11 +56,20 @@ void RE::sum(block *R, block *S) {
     addTransition(R->end, S->end + 1, eps);
 }
 
+/**
+ *
+ * @param R
+ * @param S
+ */
 //functie voor de operatie (a)(b)
 void RE::concat(block *R, block *S) {
     addTransition(R->end, S->start, eps);
 }
 
+/**
+ *
+ * @param R
+ */
 //functie voor de operatie "*"
 void RE::kleene(block *R) {
     addTransition(R->start - 1, R->start, eps);
@@ -47,6 +78,11 @@ void RE::kleene(block *R) {
     addTransition(R->end, R->start, eps);
 }
 
+/**
+ *
+ * @param expression
+ * @return
+ */
 //verwijderd haakjes van een string
 string RE::removeBracket(string expression) {
     int open = 0;
@@ -67,11 +103,21 @@ string RE::removeBracket(string expression) {
     return expression;
 }
 
+/**
+ *
+ * @param expression
+ * @return
+ */
 //checkt of een string geen haakjes geeft
 bool RE::noBrackets(string const &expression) {
     return all_of(expression.begin(), expression.end(), [](char i) { return (i != '(' && i != ')'); });
 }
 
+/**
+ *
+ * @param expression
+ * @return
+ */
 //berekent de hoeveelheid states are nodig gaan zijn
 int RE::calculateOperations(string const &expression) {
     int op = 0;
@@ -82,6 +128,12 @@ int RE::calculateOperations(string const &expression) {
     return op;
 }
 
+/**
+ *
+ * @param R
+ * @param S
+ * @param operation
+ */
 //voert de operatie uit
 void RE::doOperation(block *R, block *S, string const &operation) {
     if (operation == "*")
@@ -93,7 +145,13 @@ void RE::doOperation(block *R, block *S, string const &operation) {
     }
 }
 
+
 //checkt of er "geen operators zijn" dus concat
+/**
+ *
+ * @param expression
+ * @return
+ */
 bool RE::noOperators(string const &expression) {
     for (auto const &c : expression) {
         if (c == '(' || c == ')' || c == '+' || c == '*')
@@ -102,6 +160,12 @@ bool RE::noOperators(string const &expression) {
     return true;
 }
 
+/**
+ *
+ * @param a
+ * @param startPoint
+ * @param endPoint
+ */
 //vindt de start en end voor de nieuwe blocks
 void RE::findStartEnd(block *a, int *startPoint, int *endPoint) {
     int open = 0;
@@ -137,6 +201,15 @@ void RE::findStartEnd(block *a, int *startPoint, int *endPoint) {
     }
 }
 
+/**
+ *
+ * @param startPoint
+ * @param endPoint
+ * @param expression1
+ * @param expression2
+ * @param operation
+ * @param a
+ */
 //vindt de expressie voor de nieuwe blocks
 void RE::findExpressions(int startPoint, int endPoint, string *expression1, string *expression2, string *operation,
                          block a) {
@@ -156,6 +229,15 @@ void RE::findExpressions(int startPoint, int endPoint, string *expression1, stri
     }
 }
 
+/**
+ *
+ * @param x
+ * @param y
+ * @param a
+ * @param expression1
+ * @param expression2
+ * @param operation
+ */
 //bouwt nieuwe blocks
 void RE::buildBlock(block *x, block *y, block const &a, string const &expression1, string const &expression2,
                     string const &operation) {
@@ -170,6 +252,11 @@ void RE::buildBlock(block *x, block *y, block const &a, string const &expression
     }
 }
 
+/**
+ *
+ * @param a
+ * @return
+ */
 //breekt een block in twee
 pair<RE::block, RE::block> RE::breakUp(block a) {
     pair<RE::block, RE::block> p;
@@ -192,6 +279,10 @@ pair<RE::block, RE::block> RE::breakUp(block a) {
     return p;
 }
 
+/**
+ *
+ * @param a
+ */
 //zoekt alle transities recursief
 void RE::findTransitions(block &a) {
     pair<RE::block, RE::block> p;
@@ -215,6 +306,10 @@ void RE::buildTransitions() {
     }
 }
 
+/**
+ * bouwt de states
+ * @param end
+ */
 void RE::buildStates(int end) {
     for (int i = 1; i < end; i++) {
         addState(i, false, false);
@@ -229,6 +324,10 @@ void RE::buildAlph() {
     }
 }
 
+/**
+ *
+ * @return
+ */
 //zet regulier expressie om in een NFA
 ENFA RE::toENFA() {
     int end = calculateOperations(regex) - 1;
@@ -257,6 +356,7 @@ ENFA RE::toENFA() {
     return enfa;
 }
 
+// print de reguliere expressie
 void RE::print(){
     cout << regex;
 }

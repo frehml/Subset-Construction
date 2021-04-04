@@ -12,6 +12,10 @@
 using namespace std;
 using json = nlohmann::json;
 
+/**
+ *
+ * @param p
+ */
 //constructor
 NFA::NFA(string p) {
     path = p;
@@ -19,6 +23,11 @@ NFA::NFA(string p) {
     input >> nfa;
 }
 
+/**
+ *
+ * @param new_state
+ * @return
+ */
 //checkt of state een accepterende state is
 bool NFA::accept(vector<string> new_state) {
     bool accepting = false;
@@ -31,6 +40,11 @@ bool NFA::accept(vector<string> new_state) {
     return accepting;
 }
 
+/**
+ *
+ * @param new_state
+ * @return
+ */
 //zet vector om in string
 string NFA::vecToString(vector<string> new_state) {
     string name = "{" + new_state[0];
@@ -42,6 +56,12 @@ string NFA::vecToString(vector<string> new_state) {
     return name;
 }
 
+/**
+ *
+ * @param name
+ * @param starting
+ * @param accepting
+ */
 //voegt state toe aan het json bestand
 void NFA::addState(string name, bool starting, bool accepting) {
     dfa["states"].push_back(
@@ -50,6 +70,12 @@ void NFA::addState(string name, bool starting, bool accepting) {
              {"accepting", accepting}});
 }
 
+/**
+ *
+ * @param from
+ * @param to
+ * @param input
+ */
 //voegt transitie toe aan het json bestand
 void NFA::addTransition(string from, string to, string input) {
     dfa["transitions"].push_back(
@@ -58,6 +84,12 @@ void NFA::addTransition(string from, string to, string input) {
              {"input", input}});
 }
 
+/**
+ *
+ * @param state
+ * @param input
+ * @return
+ */
 //zoek transitie
 vector<string> NFA::findTransition(vector<string> state, string input) {
     vector<string> new_state;
@@ -73,6 +105,10 @@ vector<string> NFA::findTransition(vector<string> state, string input) {
     return new_state;
 }
 
+/**
+ *
+ * @param state
+ */
 //vind ttransities en bijgevolg states recursief
 void NFA::subsetConstruction(vector<string> const &state) {
     vector<vector<string>> states;
@@ -90,6 +126,10 @@ void NFA::subsetConstruction(vector<string> const &state) {
     }
 }
 
+/**
+ *
+ * @return
+ */
 //zet dfa om in nfa
 DFA NFA::toDFA() {
     vector<string> startState;

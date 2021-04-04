@@ -7,12 +7,22 @@ using namespace std;
 
 using json = nlohmann::json;
 
+/**
+ * constructor
+ * @param p
+ */
 DFA::DFA(string p) {
     path = p;
     ifstream input(path);
     input >> dfa;
 }
 
+/**
+ * contructor
+ * @param dfa1
+ * @param dfa2
+ * @param doorsnede
+ */
 DFA::DFA(const DFA dfa1, const DFA dfa2, bool doorsnede) {
     path1 = dfa1.path;
     path2 = dfa2.path;
@@ -20,6 +30,11 @@ DFA::DFA(const DFA dfa1, const DFA dfa2, bool doorsnede) {
     product(string(path1), string(path2));
 }
 
+/**
+ *
+ * @param numbers
+ * @return
+ */
 //kijkt of een string geaccepteerd wordt
 bool DFA::accepts(string numbers) {
     string cur_node;
@@ -49,6 +64,9 @@ bool DFA::accepts(string numbers) {
     return false;
 }
 
+/**
+ *
+ */
 //print de dfa
 void DFA::print() {
     ifstream input(path);
@@ -56,11 +74,21 @@ void DFA::print() {
     cout << dfa.dump(4) << endl;
 }
 
+/**
+ *
+ * @param vec
+ * @return
+ */
 //zet een vector om in een string
 string DFA::vecToString(vector<string> vec) {
     return "(" + vec[0] + "," + vec[1] + ")";
 }
 
+/**
+ *
+ * @param state
+ * @return
+ */
 //checkt of een state accepterend of startend is
 pair<bool, bool> DFA::check(vector<string> state) {
     vector<bool> bools = {false, false, false, false};
@@ -110,6 +138,12 @@ void DFA::addStates() {
     }
 }
 
+/**
+ *
+ * @param from
+ * @param to
+ * @param input
+ */
 //voegt een transitie toe aan de dfa
 void DFA::addTransition(string from, string to, string input) {
     dfa["transitions"].push_back(
@@ -118,6 +152,11 @@ void DFA::addTransition(string from, string to, string input) {
              {"input", input}});
 }
 
+/**
+ *
+ * @param d
+ * @return
+ */
 //vindt de start state
 string DFA::findStart(json d) {
     for (int i = 0; i < d["states"].size(); i++) {
@@ -127,6 +166,13 @@ string DFA::findStart(json d) {
     return "";
 }
 
+/**
+ *
+ * @param d
+ * @param state
+ * @param input
+ * @return
+ */
 //loopt over transities en geeft "to" terug voor een state en input
 string DFA::stateLoop(json d, string state, string input) {
     for (int i = 0; i < d["transitions"].size(); i++) {
@@ -136,6 +182,10 @@ string DFA::stateLoop(json d, string state, string input) {
     return "";
 }
 
+/**
+ *
+ * @param state
+ */
 //vindt alle transities recursief
 void DFA::findTransition(vector<string> state) {
     vector<vector<string>> new_states;
@@ -159,6 +209,11 @@ void DFA::findTransition(vector<string> state) {
     }
 }
 
+/**
+ * maakt de product DFA
+ * @param d1
+ * @param d2
+ */
 void DFA::product(const string &d1, const string &d2) {
     ifstream i1(d1);
     i1 >> dfa1;
@@ -192,6 +247,11 @@ void DFA::product(const string &d1, const string &d2) {
     path = "product.json";
 }
 
+/**
+ *
+ * @param state
+ * @param addative
+ */
 //verwijdert een state uit de transitions vector
 void DFA::removeState(string const &state, string const &addative) {
     vector<transition> trans;
@@ -228,6 +288,7 @@ void DFA::printTransitions(){
     cout << endl;
 }
 
+
 //vindt de start transitions en voegt de transition blocks toe aan transitions
 void DFA::startTransitions() {
     vector<transition> trans;
@@ -243,7 +304,9 @@ void DFA::startTransitions() {
 
 //zoekt alle niet accepterende en startende states
 void DFA::getStates(){
+    vector<int> temp;
     for(auto state : dfa["states"]){
+        stateNames.push_back(state["name"]);
         if(state["accepting"])
             accepting[state["name"]]= true;
         else
@@ -258,8 +321,10 @@ void DFA::getStates(){
         if(!state["accepting"] && !state["starting"])
             s.push_back(stoi(string(state["name"])));
     }
+    sort(stateNames.begin(), stateNames.end());
     sort(s.begin(), s.end());
 }
+
 
 void DFA::sumEquals(){
     vector<transition> trans;
@@ -294,52 +359,48 @@ void DFA::sumEquals(){
     transitions.push_back(trans);
 }
 
-/*
-void DFA::sumEquals(){
-    vector<transition> t = transitions.back();
-    vector<transition> trans;
-    for(int x = 0; x <= t.size(); x++){
-        transition transition;
-        string expression = t[x].expression;
-        for(int y = 0; y <= t.size(); y++){
-            if(y > x){
-                if(t[x].from == t[y].from && t[x].to == t[y].to){
-                    expression += "+"+t[y].expression;
+/**
+ * zet de laatste transitie structs om in een reguliere expressie
+ * @return
+ */
+string DFA::format(){
+    string expression;
+    for(auto const &name : stateNames){
+        string R, S, U, T;
+        if(!starting[name] && !sortedTransitions[name].empty()){
+            for(auto const &transition : sortedTransitions[name]){
+                if(transition.to == transition.from)
+                    U = transition.expression;
+                else if (starting[transition.to])
+                    T = transition.expression;
+            }
+
+            for(auto const &transition : sortedTransitions["start"]){
+                if(transition.from == transition.to)
+                    R = transition.expression;
+                else if (transition.to == name){
+                    S = transition.expression;
                 }
             }
-        }
-        transition = {t[x].from, t[x].to, expression};
-        if(!trans.empty()){
-            if(transition.from != trans.back().from || transition.to != trans.back().to)
-                trans.push_back(transition);
-        }
-        else
-            trans.push_back(transition);
-    }
-    transitions.push_back(trans);
-}
-*/
+            if(!expression.empty())
+                expression += "+";
 
-string DFA::format(){
-    string R, S, U, T;
-    for(auto const &transition : transitions.back()){
-        if(starting[transition.from] && starting[transition.to])
-            R = transition.expression;
-        else if (starting[transition.from] && accepting[transition.to])
-            S = transition.expression;
-        else if (accepting[transition.from] && accepting[transition.to])
-            U = transition.expression;
-        else if (starting[transition.to] && accepting[transition.from])
-            T = transition.expression;
+            if(R.empty() && T.empty())
+                expression += S+U+"*";
+            else if (R.empty())
+                expression += "("+S+U+T+")"+"*"+S+U;
+            else
+                expression += "("+R+"+"+S+U+T+")"+"*"+S+U;
+        }
     }
-    if(R.empty() && T.empty())
-        return S+U+"*";
-    else if (R.empty())
-        return "("+S+U+"*"+T+")"+"*"+S+U+"*";
-    else
-        return "("+R+"+"+S+U+"*"+T+")"+"*"+S+U+"*";
+    return expression;
 }
 
+/**
+ * zoekt of een node een transitie op zichzelf heeft
+ * @param state
+ * @return
+ */
 string DFA::findAddative(string const &state){
     string addative;
     for(auto const &transition : transitions.back()){
@@ -361,8 +422,240 @@ RE DFA::toRE() {
         sumEquals();
     }
 
+    for(auto const &transition : transitions.back()){
+        if(starting[transition.from])
+            sortedTransitions["start"].push_back(transition);
+        else
+            sortedTransitions[transition.from].push_back(transition);
+    }
+
     RE re(format(), 'e');
     return re;
 }
-
 //      (f(d)*f+d(d+f(d)*f))(f+d)*
+
+//zoekt de start kruisjes (waar een accepterend state is)
+void DFA::startingX(){
+    for(auto const &name1 : stateNames){
+        for(auto const &name2 : stateNames){
+            if(accepting[name1] ^ accepting[name2]){
+                table[{name1, name2}] = true;
+            }
+            else
+                table[{name1, name2}] = false;
+        }
+    }
+}
+
+//checkt of string op een kruisje valt
+bool DFA::acceptCheck(string name1, string name2){
+    vector<vector<string>> possibles;
+    for(auto const &alph : dfa["alphabet"]){
+        vector<string> posib(2);
+        for(auto tran : dfa["transitions"]){
+            if(tran["input"] == alph && tran["from"] == name1)
+                posib[0] = tran["to"];
+            else if (tran["input"] == alph && tran["from"] == name2)
+                posib[1] = tran["to"];
+        }
+        possibles.push_back(posib);
+    }
+
+    for(auto const &p : possibles){
+        if(table[p])
+            return true;
+    }
+    return false;
+}
+
+//zoekt nieuwe kruisjes met eerder verkregen kruisjes
+void DFA::recursiveX(){
+    for(auto const &name1 : stateNames){
+        for(auto const &name2 : stateNames){
+            if(acceptCheck(name1, name2)){
+                table[{name1, name2}] = true;
+            }
+        }
+    }
+}
+/**
+ *
+ * @param vec
+ */
+//maakt de states van de nieuwe DFA
+void DFA::makeStates(vector<vector<string>> const &vec){
+    for(auto const &v : vec){
+        bool start = false;
+        bool accept = false;
+        string name = "{";
+        for(auto const &elem : v){
+            if(starting[elem])
+                start = true;
+
+            if(accepting[elem])
+                accept = true;
+
+            name += elem + ", ";
+        }
+        name = name.substr(0, name.size()-2);
+        name += "}";
+        new_dfa["states"].push_back({{"name", name},
+                                     {"starting", start},
+                                     {"accepting", accept}});
+    }
+}
+
+/**
+ * vector naar string
+ * @param vec
+ * @return
+ */
+string DFA::vToString(vector<string> const &vec){
+    string name = "{";
+    for(auto const &elem : vec){
+        name += elem + ", ";
+    }
+    name = name.substr(0, name.size()-2);
+    name += "}";
+    return name;
+}
+
+/**
+ * checkt of to niet vervangen moet worden door een grotere node
+ * @param to
+ * @param st
+ * @return
+ */
+vector<string> DFA::toCheck(vector<string> to, vector<vector<string>> const &st){
+    for(auto state : st){
+        bool check = true;
+        for(auto const &t : to){
+            if (std::find(state.begin(), state.end(), t) == state.end())
+                check = false;
+        }
+        if(check)
+            return state;
+    }
+    return to;
+}
+
+/**
+ * maakt de transities van de nieuwe DFA
+ * @param st
+ */
+void DFA::makeTransitions(vector<vector<string>> const &st){
+    for(auto state : st){
+        for(auto const &alph : dfa["alphabet"]){
+            vector<string> to;
+            for(auto transition : dfa["transitions"]){
+                if(count(state.begin(), state.end(), transition["from"]) && alph == transition["input"]){
+                    to.push_back(transition["to"]);
+                }
+            }
+            to = toCheck(to, st);
+
+            new_dfa["transitions"].push_back({{"from", vToString(state)},
+                                         {"to", vToString(to)},
+                                         {"input", alph}});
+        }
+    }
+}
+
+/**
+ * vindt de states vanuit de TFA table
+ */
+void DFA::findStates(){
+    set<string> check;
+    vector<vector<string>> new_states;
+    vector<vector<string>> old_states;
+    for(auto const &name1 : stateNames){
+        for(auto const &name2 : stateNames){
+            if(name1 < name2 && !table[{name1, name2}]){
+                check.insert(name1);
+                check.insert(name2);
+                new_states.push_back({name1, name2});
+            }
+            else if (name1 < name2 && table[{name1, name2}]){
+                old_states.push_back({name1});
+            }
+        }
+    }
+    old_states.erase(unique(old_states.begin(), old_states.end()), old_states.end());
+
+    if(check.size() <= new_states.size()){
+        vector<string> new_state;
+        for(auto const &elem : check){
+            new_state.push_back(elem);
+        }
+        new_states = {};
+        new_states.push_back(new_state);
+        sort(new_states.begin(), new_states.end());
+    }
+
+    makeStates(new_states);
+    makeStates(old_states);
+    new_states.insert( new_states.end(), old_states.begin(), old_states.end());
+    makeTransitions(new_states);
+}
+
+/**
+ * maakt de DFA van de TFA
+ * @return
+ */
+string DFA::createDFA(){
+    new_dfa = {
+            {"type",     "DFA"},
+            {"alphabet", dfa["alphabet"]},
+            {"states", {"", ""}},
+            {"transitions", {"", ""}}
+    };
+
+    findStates();
+
+    new_dfa["states"].erase(new_dfa["states"].begin());
+    new_dfa["states"].erase(new_dfa["states"].begin());
+    new_dfa["transitions"].erase(new_dfa["transitions"].begin());
+    new_dfa["transitions"].erase(new_dfa["transitions"].begin());
+
+    ofstream file("TableFillingDFA.json");
+    file << new_dfa;
+    file.close();
+    return "TableFillingDFA.json";
+}
+
+/**
+ * minimaliseert de DFA
+ * @return
+ */
+DFA DFA::minimize(){
+    getStates();
+    startingX();
+    map<vector<string>, bool> prevTable;
+    while(prevTable != table){
+        prevTable = table;
+        recursiveX();
+    }
+    DFA d(createDFA());
+    return d;
+}
+
+/**
+ * print de TFA tabel
+ */
+void DFA::printTable(){
+    for(int x = 1; x < stateNames.size(); x++){
+        cout << stateNames[x];
+        for(int y = 0; y < x; y++){
+            string first = stateNames[x];
+            string second = stateNames[y];
+            if(table[{first, second}])
+                cout << "\t" << "X";
+            else
+                cout << "\t" << "-";
+        }
+        cout << endl;
+    }
+    cout << "\t";
+    for(int i = 0; i < stateNames.size()-1; i++){cout << stateNames[i] << "\t";}
+    cout << endl;
+}

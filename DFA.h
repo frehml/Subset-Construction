@@ -23,6 +23,7 @@ public:
     json dfa1;
     json dfa2;
     bool d;
+    json new_dfa;
 
     struct transition {
         string from;
@@ -30,11 +31,14 @@ public:
         string expression;
     };
 
+    vector<string> stateNames;
     map<string, bool> starting;
     map<string, bool> accepting;
     vector<vector<transition>> transitions;
     vector<int> s;
     set<vector<string>> states;
+    map<vector<string>, bool> table;
+    map<string, vector<transition>> sortedTransitions;
 
     void product(const string &d1, const string &d2);
 
@@ -58,6 +62,17 @@ public:
     void sumEquals();
     string format();
     string findAddative(string const &state);
+    DFA minimize();
+    void printTable();
+    void startingX();
+    void recursiveX();
+    bool acceptCheck(string name1, string name2);
+    string createDFA();
+    void findStates();
+    void makeStates(vector<vector<string>> const &vec);
+    void makeTransitions(vector<vector<string>> const &states);
+    static string vToString(vector<string> const &vec);
+    static vector<string> toCheck(vector<string> to, vector<vector<string>> const &st);
 };
 
 

@@ -7,7 +7,7 @@
 using namespace std;
 
 int main() {
-    DFA dfa("input-state1.json");
+    DFA dfa("input-state3.json");
     dfa.toRE().print();
     return 0;
 }

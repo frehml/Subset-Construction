@@ -11,6 +11,10 @@
 using namespace std;
 using json = nlohmann::json;
 
+/**
+ *
+ * @param p
+ */
 //constructor
 ENFA::ENFA(string p) {
     path = p;
@@ -19,6 +23,11 @@ ENFA::ENFA(string p) {
     eps = enfa["eps"];
 }
 
+/**
+ *
+ * @param nodes
+ * @param input
+ */
 //zoekt de volgende nodes adhv een input
 void ENFA::nextNodes(vector<int> *nodes, string input) {
     vector<int> new_states;
@@ -32,6 +41,10 @@ void ENFA::nextNodes(vector<int> *nodes, string input) {
     *nodes = new_states;
 }
 
+/**
+ *
+ * @param nodes
+ */
 //probeert een epsilon transitie voor alle states
 void ENFA::tryEps(vector<int> *nodes) {
     for (auto node : *nodes) {
@@ -45,6 +58,11 @@ void ENFA::tryEps(vector<int> *nodes) {
     }
 }
 
+/**
+ *
+ * @param input
+ * @return
+ */
 //checkt of een string accepterend is in de ENFA
 bool ENFA::accepts(string input) {
     vector<int> states = {0};
@@ -57,7 +75,11 @@ bool ENFA::accepts(string input) {
 
     return (count(states.begin(), states.end(), enfa["states"].size() - 1) == 1);
 }
-
+/**
+ *
+ * @param elem
+ * @return
+ */
 //telt hoeveelt transities er zijn
 int ENFA::transitionCount(string elem) {
     int count = 0;
@@ -101,7 +123,11 @@ void ENFA::printStats() {
         i++;
     }
 }
-
+/**
+ *
+ * @param new_state
+ * @return
+ */
 //checkt of state een accepterende state is
 bool ENFA::accept(vector<string> new_state) {
     bool accepting = false;
@@ -114,6 +140,11 @@ bool ENFA::accept(vector<string> new_state) {
     return accepting;
 }
 
+/**
+ *
+ * @param new_state
+ * @return
+ */
 //zet vector om in string
 string ENFA::vecToString(vector<string> new_state) {
     if (new_state.empty())
@@ -128,6 +159,12 @@ string ENFA::vecToString(vector<string> new_state) {
     return name;
 }
 
+/**
+ *
+ * @param name
+ * @param starting
+ * @param accepting
+ */
 //voegt state toe aan het json bestand
 void ENFA::addState(string name, bool starting, bool accepting) {
     dfa["states"].push_back(
@@ -136,6 +173,12 @@ void ENFA::addState(string name, bool starting, bool accepting) {
              {"accepting", accepting}});
 }
 
+/**
+ *
+ * @param from
+ * @param to
+ * @param input
+ */
 //voegt transitie toe aan het json bestand
 void ENFA::addTransition(string from, string to, string input) {
     dfa["transitions"].push_back(
@@ -144,6 +187,12 @@ void ENFA::addTransition(string from, string to, string input) {
              {"input", input}});
 }
 
+/**
+ *
+ * @param state
+ * @param input
+ * @return
+ */
 //zoek transitie
 vector<string> ENFA::findTransition(vector<string> state, string input) {
     vector<string> new_state;
@@ -156,6 +205,11 @@ vector<string> ENFA::findTransition(vector<string> state, string input) {
     return new_state;
 }
 
+/**
+ *
+ * @param state1
+ * @return
+ */
 //probeert voor elke state een epsilion transitie
 vector<string> ENFA::tryEpsilon(vector<string> state1) {
     vector<string> new_state = state1;
@@ -173,6 +227,10 @@ vector<string> ENFA::tryEpsilon(vector<string> state1) {
         return tryEpsilon(new_state);
 }
 
+/**
+ *
+ * @param state
+ */
 //vind ttransities en bijgevolg states recursief
 void ENFA::subsetConstruction(vector<string> const &state) {
     vector<vector<string>> states;
@@ -192,6 +250,10 @@ void ENFA::subsetConstruction(vector<string> const &state) {
     }
 }
 
+/**
+ *
+ * @return
+ */
 //zet dfa om in nfa
 DFA ENFA::toDFA() {
     vector<string> startState;
