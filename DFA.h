@@ -24,8 +24,16 @@ public:
     json dfa2;
     bool d;
 
-    map<string, vector<vector<string>>> transitions;
+    struct transition {
+        string from;
+        string to;
+        string expression;
+    };
 
+    map<string, bool> starting;
+    map<string, bool> accepting;
+    vector<vector<transition>> transitions;
+    vector<int> s;
     set<vector<string>> states;
 
     void product(const string &d1, const string &d2);
@@ -43,6 +51,13 @@ public:
     static string stateLoop(json d, string state, string input);
     void findTransition(vector<string> state);
     RE toRE();
+    void startTransitions();
+    void removeState(string const &state, string const &addative);
+    void printTransitions();
+    void getStates();
+    void sumEquals();
+    string format();
+    string findAddative(string const &state);
 };
 
 
